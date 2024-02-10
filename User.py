@@ -1,7 +1,4 @@
 from Post import Post
-from SalePost import SalePost
-from Textpost import TextPost
-from ImagePost import ImagePost
 
 
 class User:
@@ -32,8 +29,6 @@ class User:
 
     def log_in(self):
         self.connect = True
-
-    ####################################################
 
     def publish_post(self, ty, inf, price=None, location=None, isAvailable=True):
         if self.connect:

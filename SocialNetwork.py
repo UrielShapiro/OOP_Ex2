@@ -17,12 +17,15 @@ class SocialNetwork:
         else:
             raise RuntimeError('Call instance() instead')
 
+    # factory#
     def sign_up(self, name, password):
         for u in self.users:
             if u.name == name:
                 raise RuntimeError('name is not valid')
         if 4 < len(password) < 8:
-            self.users.append(User.User(name, password, True))
+            newUser = User.User(name, password, True)
+            self.users.append(newUser)
+            return newUser
 
     def log_in(self, name, password):
         for u in self.users:

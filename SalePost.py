@@ -8,3 +8,11 @@ class SalePost(Post):
         self.location = location
         self.isAvailable = isAvailable
         super().__init__(owner)
+
+    def discount(self, percent, password):
+        if self.owner.password == password:
+            self.price -= self.price * percent / 100
+
+    def sold(self, password):
+        if self.owner.password == password:
+            self.isAvailable = False
