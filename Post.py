@@ -5,7 +5,8 @@ class Post:
 
     ######################
     def like(self, user):
-        pass
+        self.owner.my_notifications.append(f"{user.name} liked your post")
 
+    ##########################################
     def comment(self, user, txt):
         pass

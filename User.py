@@ -7,46 +7,55 @@ class User:
     followed = []
     my_posts = []
     my_notifications = []
-    followers = 0
+    followers = []
 
-    def __init__(self, name, password, isConnect):
+    def __init__(self, name: str, password: str, isConnected: bool):
         self.name = name
         self.password = password
-        self.connect = isConnect
+        self.connected = isConnected
 
     def follow(self, other):
-        if self.connect:
+        if self.connected:
             for f in self.followed:
                 if f.name == other.name:
                     return
             self.followed.append(other)
-            other.followrs += 1
+            other.followers.append(self)
+            print(f"{other.name} started following {self.name}")
 
     def unfollow(self, other):
-        if self.connect:
+        if self.connected:
             for f in self.followed:
                 if f.name == other.name:
                     self.followed.remove(other)
-                    other.followrs -= 1
+                    other.followers.remove(self)
+                    print(f"{self.name} unfollowed {other.name}")
 
     def log_out(self):
-        self.connect = False
+        self.connected = False
+        print(f"{self.name} disconnected")
 
     def log_in(self):
-        self.connect = True
+        self.connected = True
+        print(f"{self.name} connected")
 
-    def publish_post(self, ty, inf, price=None, location=None, isAvailable=True):
-        if self.connect:
-            if ty == "Text":
-                self.my_posts.append(TextPost(self, inf))
-            elif ty == "Image":
-                self.my_posts.append(ImagePost(self, inf))
-            elif ty == "Sale":
-                self.my_posts.append(SalePost(self, inf, price, location, isAvailable))
+    def publish_post(self, postType: str, information: str, price=None, location=None):
+        if self.connected:
+            if postType == "Text":
+                self.my_posts.append(TextPost(self, information))
+                print(f"{self.name} published a post:\n {information}")
+            elif postType == "Image":
+                self.my_posts.append(ImagePost(self, information))
+                print(f"{self.name} posted a picture")
+            elif postType == "Sale":
+                self.my_posts.append(SalePost(self, information, price, location))
+                print(
+                    f"{self.name} posted a product for sale:\nFor sale! {information}, price: {price}  pickup from: {location}")
 
-    def print_details(self):
-        print("User name: ", self.name, "Number of posts: ", self.my_posts.__len__(), "Number of followers: ",
-              self.followers)
+    def __str__(self):
+        return (f"User name: {self.name} ,Number of posts: {self.my_posts.__len__()}, Number of followers: "
+                f"{self.followers.__len__()}")
+
 
     ##################################################
     def print_notifications(self):

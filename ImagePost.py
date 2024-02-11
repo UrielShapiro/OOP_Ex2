@@ -1,5 +1,6 @@
-# import PIL.Image
 from Post import Post
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
 
 
 class ImagePost(Post):
@@ -7,9 +8,16 @@ class ImagePost(Post):
         self.path = path
         super().__init__(owner)
 
-    def print_post(self):
-        print(self.owner.name+ "posted a picture")
 
-##################################
-    # def display(self):
-    #     img = PIL.Image.open(self.path)
+
+    def display(self):
+        try:
+            img = mpimg.imread(self.path)
+            plt.imshow(img)
+            plt.axis("off")  # Hide axes
+            plt.show()
+            print("Shows picture")
+        except FileNotFoundError:
+            print(f"Image not found at path: {self.path}")
+
+

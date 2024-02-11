@@ -24,10 +24,12 @@ class SocialNetwork:
         for u in self.users:
             if u.name == name:
                 raise RuntimeError('name is not valid')
-        if 4 < len(password) < 8:
+        if 4 <= len(password) <= 8:
             newUser = User.User(name, password, True)
             self.users.append(newUser)
             return newUser
+        else:
+            raise RuntimeError('illegal password')
 
     def log_in(self, name, password):
         for u in self.users:

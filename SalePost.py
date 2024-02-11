@@ -2,19 +2,19 @@ from Post import Post
 
 
 class SalePost(Post):
-    def __init__(self, owner, inf, price, location, isAvailable=True):
+    def __init__(self, owner, inf, price, location):
         self.inf = inf
         self.price = price
         self.location = location
-        self.isAvailable = isAvailable
+        self.isAvailable = True
         super().__init__(owner)
 
     def discount(self, percent, password):
-        if self.owner.connect is True and self.owner.password == password:
+        if self.owner.connected is True and self.owner.password == password:
             self.price -= self.price * percent / 100
 
     def sold(self, password):
-        if self.owner.connect is True and self.owner.password == password:
+        if self.owner.connected is True and self.owner.password == password:
             self.isAvailable = False
 
     def print_post(self):
