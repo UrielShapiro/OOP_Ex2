@@ -1,9 +1,10 @@
 import User
-import Post
 
+# singleton
 _instance = None
 
 
+# singleton
 def instance():
     return _instance
 
@@ -11,6 +12,7 @@ def instance():
 class SocialNetwork:
     users = []
 
+    # singleton
     def __init__(self, name):
         if _instance is None:
             self.name = name
