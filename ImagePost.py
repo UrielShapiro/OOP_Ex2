@@ -7,8 +7,8 @@ class ImagePost(Post):
     def __init__(self, owner, path):
         self.path = path
         super().__init__(owner)
-
-
+    def __str__(self):
+        return f"{self.owner.name} posted a picture"
 
     def display(self):
         try:

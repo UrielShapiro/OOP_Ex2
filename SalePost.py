@@ -9,6 +9,10 @@ class SalePost(Post):
         self.isAvailable = True
         super().__init__(owner)
 
+    def __str__(self):
+        return (f"{self.owner} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
+                f"pickup from: {self.location}")
+
     def discount(self, percent, password):
         if self.owner.connected is True and self.owner.password == password:
             self.price -= self.price * percent / 100
@@ -18,6 +22,3 @@ class SalePost(Post):
         if self.owner.connected is True and self.owner.password == password:
             self.isAvailable = False
             print(f"{self.owner} product is sold")
-
-    # def print_post(self):
-    #     print(f"{self.owner.name} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}  pickup from: {self.location}")
