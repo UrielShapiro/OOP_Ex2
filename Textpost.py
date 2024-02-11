@@ -6,5 +6,5 @@ class TextPost(Post):
         self.txt = txt
         super().__init__(owner)
 
-    def print_post(self):
-        print(self.owner.name + " published a post:\n" + self.txt)
+    # def print_post(self):
+    #     print(f"{self.owner.name} published a post:\n{self.txt}")

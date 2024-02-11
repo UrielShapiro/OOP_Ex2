@@ -16,6 +16,7 @@ class SocialNetwork:
     def __init__(self, name):
         if _instance is None:
             self.name = name
+            print(f"The social network {self.name} was created!")
         else:
             raise RuntimeError('Call instance() instead')
 
