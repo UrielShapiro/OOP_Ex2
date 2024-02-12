@@ -39,27 +39,43 @@ class User:
         self.connected = True
         print(f"{self.name} connected")
 
+    # def publish_post(self, postType: str, information: str, price=None, location=None):
+    #     if self.connected:
+    #         if postType == "Text":
+    #             self.my_posts.append(TextPost(self, information))
+    #             print(f"{self.name} published a post:\n {information}")
+    #         elif postType == "Image":
+    #             self.my_posts.append(ImagePost(self, information))
+    #             print(f"{self.name} posted a picture")
+    #         elif postType == "Sale":
+    #             self.my_posts.append(SalePost(self, information, price, location))
+    #             print(
+    #                 f"{self.name} posted a product for sale:\nFor sale! {information}, price: {price}  "
+    #                 f"pickup from: {location}")
+
     def publish_post(self, postType: str, information: str, price=None, location=None):
         if self.connected:
-            if postType == "Text":
-                self.my_posts.append(TextPost(self, information))
-                print(f"{self.name} published a post:\n {information}")
-            elif postType == "Image":
-                self.my_posts.append(ImagePost(self, information))
-                print(f"{self.name} posted a picture")
-            elif postType == "Sale":
-                self.my_posts.append(SalePost(self, information, price, location))
-                print(
-                    f"{self.name} posted a product for sale:\nFor sale! {information}, price: {price}  pickup from: {location}")
+            new_post = self.factory_post(postType, self, information, price, location)
+            self.my_posts.append(new_post)
+            return new_post
+
+    def factory_post(self, postType: str, owner: 'User', information: str, price, location):
+        if postType == "Text":
+            # print(f"{owner.name} published a post:\n {information}")
+            return TextPost(owner, information)
+        elif postType == "Image":
+            # print(f"{owner.name} posted a picture")
+            return ImagePost(owner, information)
+        elif postType == "Sale":
+            # print(
+            #     f"{owner.name} posted a product for sale:\nFor sale! {information}, price: {price}  "
+            #     f"pickup from: {location}")
+            self.my_posts.append(SalePost(self, information, price, location))
 
     def __str__(self):
         return (f"User name: {self.name} ,Number of posts: {self.my_posts.__len__()}, Number of followers: "
                 f"{self.followers.__len__()}")
 
-
     ##################################################
     def print_notifications(self):
         pass
-
-
-

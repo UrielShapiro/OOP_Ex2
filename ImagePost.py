@@ -7,8 +7,7 @@ class ImagePost(Post):
     def __init__(self, owner, path):
         self.path = path
         super().__init__(owner)
-
-
+        print(f"{owner.name} posted a picture")
 
     def display(self):
         try:
@@ -19,5 +18,3 @@ class ImagePost(Post):
             print("Shows picture")
         except FileNotFoundError:
             print(f"Image not found at path: {self.path}")
-
-
