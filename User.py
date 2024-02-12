@@ -3,6 +3,20 @@ from SalePost import SalePost
 from Textpost import TextPost
 
 
+def factory_post(postType: str, owner: 'User', information: str, price, location):
+    if postType == "Text":
+        # print(f"{owner.name} published a post:\n {information}")
+        return TextPost(owner, information)
+    elif postType == "Image":
+        # print(f"{owner.name} posted a picture")
+        return ImagePost(owner, information)
+    elif postType == "Sale":
+        # print(
+        #     f"{owner.name} posted a product for sale:\nFor sale! {information}, price: {price}  "
+        #     f"pickup from: {location}")
+        return SalePost(owner, information, price, location)
+
+
 class User:
     followed = []
     my_posts = []
@@ -55,22 +69,9 @@ class User:
 
     def publish_post(self, postType: str, information: str, price=None, location=None):
         if self.connected:
-            new_post = self.factory_post(postType, self, information, price, location)
+            new_post = factory_post(postType, self, information, price, location)
             self.my_posts.append(new_post)
             return new_post
-
-    def factory_post(self, postType: str, owner: 'User', information: str, price, location):
-        if postType == "Text":
-            # print(f"{owner.name} published a post:\n {information}")
-            return TextPost(owner, information)
-        elif postType == "Image":
-            # print(f"{owner.name} posted a picture")
-            return ImagePost(owner, information)
-        elif postType == "Sale":
-            # print(
-            #     f"{owner.name} posted a product for sale:\nFor sale! {information}, price: {price}  "
-            #     f"pickup from: {location}")
-            self.my_posts.append(SalePost(self, information, price, location))
 
     def __str__(self):
         return (f"User name: {self.name} ,Number of posts: {self.my_posts.__len__()}, Number of followers: "
