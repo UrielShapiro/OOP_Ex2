@@ -91,12 +91,12 @@ def main():
     print(p2)
 
     # Printing all notifications received by a certain user
-    # u4.print_notifications()
-    # print()
-    #
-    # # Network printing
-    # print(network)
-    #
+    u4.print_notifications()
+    print()
+
+    # Network printing
+    print(network)
+
 
 if __name__ == '__main__':
     main()

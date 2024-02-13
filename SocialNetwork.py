@@ -35,9 +35,15 @@ class SocialNetwork:
     def log_in(self, name, password):
         for u in self.users:
             if u.name == name and u.password == password:
-                u.logIn()
+                u.log_in()
 
     def log_out(self, name):
         for u in self.users:
             if u.name == name:
-                u.logOut()
+                u.log_out()
+
+    def __str__(self):
+        str_net = f"{self.name} social network\n"
+        for u in self.users:
+            str_net += u.__str__()+"\n"
+        return str_net

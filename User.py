@@ -57,6 +57,8 @@ class User:
         if self.connected:
             new_post = factory_post(postType, self, information, price, location)
             self.my_posts.append(new_post)
+            for f in self.followers:
+                self.observer.published_post_notify(f)
             return new_post
 
     def __str__(self):
@@ -71,6 +73,7 @@ class User:
         if self.name != other.name:
             self.observer.update_comment(other, inf)
 
-    #######################################
     def print_notifications(self):
-        pass
+        print(f"{self.name}'s notifications\n")
+        for n in self.my_notifications:
+            print(n, "\n")
