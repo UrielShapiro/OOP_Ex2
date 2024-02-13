@@ -1,16 +1,16 @@
-import User
-from ImagePost import ImagePost
-from SalePost import SalePost
-from Textpost import TextPost
+# import User
+# import ImagePost
+# import SalePost
+# import Textpost
 
-
-def factory_post(postType: str, owner: 'User', information: str, price, location):
-    if postType == "Text":
-        return TextPost(owner, information)
-    elif postType == "Image":
-        return ImagePost(owner, information)
-    elif postType == "Sale":
-        return SalePost(owner, information, price, location)
+#
+# def factory_post(postType: str, owner: 'User', information: str, price, location):
+#     if postType == "Text":
+#         return Textpost.TextPost(owner, information)
+#     elif postType == "Image":
+#         return ImagePost.ImagePost(owner, information)
+#     elif postType == "Sale":
+#         return SalePost.SalePost(owner, information, price, location)
 
 
 class Post:

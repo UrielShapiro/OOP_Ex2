@@ -26,7 +26,7 @@ class SocialNetwork:
             if u.name == name:
                 raise RuntimeError('name is not valid')
         if 4 <= len(password) <= 8:
-            newUser = User.User(name, password, True)
+            newUser = User.User(name, password)
             self.users.append(newUser)
             return newUser
         else:
