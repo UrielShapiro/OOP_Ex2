@@ -10,7 +10,7 @@ class SalePost(Post):
         super().__init__(owner)
 
     def __str__(self):
-        return (f"{self.owner} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
+        return (f"{self.owner.name} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
                 f"pickup from: {self.location}")
 
     def discount(self, percent, password):
