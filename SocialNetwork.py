@@ -43,8 +43,7 @@ class SocialNetwork:
                 u.log_out()
 
     def __str__(self):
-        str_net = f"{self.name} social network:\n"
+        str_net = f"{self.name} social network:"
         for user in self.users:
-            str_net += user.__str__() + "\n"
-        str_net += "\n"
+            str_net += "\n" + user.__str__()
         return str_net
