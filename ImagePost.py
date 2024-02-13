@@ -9,14 +9,15 @@ class ImagePost(Post):
         super().__init__(owner)
 
     def __str__(self):
-        return f"{self.owner.name} posted a picture"
+        return f"{self.owner.name} posted a picture\n"
 
     def display(self):
+        print("Shows picture")
         try:
             img = mpimg.imread(self.path)
             plt.imshow(img)
-            plt.axis("off")  # Hide axes
+            plt.axis("off")
             plt.show()
-            print("Shows picture")
         except FileNotFoundError:
-            print(f"Image not found at path: {self.path}")
+            pass
+

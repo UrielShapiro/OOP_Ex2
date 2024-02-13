@@ -22,8 +22,8 @@ class SocialNetwork:
 
     # factory#
     def sign_up(self, name, password):
-        for u in self.users:
-            if u.name == name:
+        for user in self.users:
+            if user.name == name:
                 raise RuntimeError('name is not valid')
         if 4 <= len(password) <= 8:
             newUser = User.User(name, password)
@@ -43,7 +43,8 @@ class SocialNetwork:
                 u.log_out()
 
     def __str__(self):
-        str_net = f"{self.name} social network\n"
-        for u in self.users:
-            str_net += u.__str__()+"\n"
+        str_net = f"{self.name} social network:\n"
+        for user in self.users:
+            str_net += user.__str__() + "\n"
+        str_net += "\n"
         return str_net

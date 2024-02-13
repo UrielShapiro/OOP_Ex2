@@ -7,4 +7,4 @@ class TextPost(Post):
         super().__init__(owner)
 
     def __str__(self):
-        return f"{self.owner.name} published a post:\n\"{self.txt}\""
+        return f"{self.owner.name} published a post:\n\"{self.txt}\"\n"
