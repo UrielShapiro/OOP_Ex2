@@ -8,16 +8,16 @@ class ImagePost(Post):
         self.path = path
         super().__init__(owner)
 
-    def __str__(self):
+    def __str__(self):  # Default method for printing the post. Changed to match printing current object.
         return f"{self.owner.name} posted a picture\n"
 
-    def display(self):
+    def display(self):          # Function to display the picture. uses matplotlib library.
         print("Shows picture")
         try:
-            img = mpimg.imread(self.path)
-            plt.imshow(img)
+            img = mpimg.imread(self.path)   # Read the image from the path.
+            plt.imshow(img)                 # Show the image.
             plt.axis("off")
             plt.show()
-        except FileNotFoundError:
+        except FileNotFoundError:   # If the file is not found, don't crash the program.
             pass
 
