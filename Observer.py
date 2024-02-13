@@ -1,7 +1,8 @@
 import User
 
 
-# class Observer():
-#     def updat_like(self, owner, other):
+class Observer():
+    pass
+    # def update_like(self, owner, other):
 
 
