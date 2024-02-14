@@ -1,10 +1,7 @@
-from ImagePost import ImagePost
 from Notifications import Notifications
-from SalePost import SalePost
-from TextPost import TextPost
-from PostFactory import PostFactory
+from Post import get_post
 
-
+""""""
 class User:
     def __init__(self, name: str, password: str):
         self.name = name
@@ -44,7 +41,7 @@ class User:
 
     def publish_post(self, post_type: str, information: str, price=None, location=None):
         if self.connected:        # The user can publish a post only if he is connected.
-            new_post = PostFactory.getPost(post_type, self, information, price, location)
+            new_post = get_post(post_type, self, information, price, location)
             # Create a new post using the factory method.
             self.my_posts.append(new_post)  # Add the new post to the list of posts that this user published.
             for user in self.followers:
