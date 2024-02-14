@@ -2,12 +2,7 @@ import User
 
 # singleton
 _instance = None
-
-
 # Will be used to create only one instance of the SocialNetwork.
-# return this instance if someone tries to create new social network
-def instance():
-    return _instance
 
 
 class SocialNetwork:
@@ -15,6 +10,14 @@ class SocialNetwork:
     this class represent a social network.
     """
     users = []
+
+    @staticmethod
+    def instance():
+        """
+        this func is a static method that returns the instance of the social network.
+        :return: the instance of the social network
+        """
+        return _instance
 
     def __init__(self, name):
         """
@@ -29,7 +32,7 @@ class SocialNetwork:
             self.name = name
             print(f"The social network {self.name} was created!")
         else:
-            raise RuntimeError('Call instance() instead')  # An instance already exists. call instance() instead.
+            raise Exception('Call instance() instead')  # An instance already exists. call instance() instead.
 
     def sign_up(self, name, password):  # Sign up to the social network.
         """
@@ -38,16 +41,16 @@ class SocialNetwork:
         param password: the new user's password
         return: the new user
         """
-        for user in self.users:         # Go over all the registered users.
-            if user.name == name:       # Check if the name is already taken by other user.
-                raise RuntimeError('name is not valid')
+        for user in self.users:  # Go over all the registered users.
+            if user.name == name:  # Check if the name is already taken by other user.
+                raise ValueError('name is not valid')
                 # If the name is already taken, you can't create a new user with the same name.
         if 4 <= len(password) <= 8:
-            newUser = User.User(name, password) # name and password are valid, create a new user.
-            self.users.append(newUser)          # Add the new user to the list of users of the social network.
-            return newUser
+            new_user = User.User(name, password)  # name and password are valid, create a new user.
+            self.users.append(new_user)  # Add the new user to the list of users of the social network.
+            return new_user
         else:
-            raise RuntimeError('illegal password')
+            raise ValueError('illegal password')
 
     def log_in(self, name, password):
         """
@@ -55,9 +58,9 @@ class SocialNetwork:
         param name: name of the user who want to log in
         param password: password of the user who want to log in
         """
-        for user in self.users:                                    # Go over all the registered users.
-            if user.name == name and user.password == password:    # Check if the name and password are
-                user.log_in()                              # Perform log in (will change the connected status to True).
+        for user in self.users:     # Go over all the registered users.
+            if user.name == name and user.password == password:  # Check if the name and password are matching any user.
+                user.log_in()  # Perform log in (will change the connected status to True).
 
     def log_out(self, name):
         """
@@ -66,13 +69,13 @@ class SocialNetwork:
         """
         for u in self.users:
             if u.name == name:  # Go over all the registered users and find the user with the given name.
-                u.log_out()     # Perform log out (will change the connected status to False).
+                u.log_out()  # Perform log out (will change the connected status to False).
 
     def __str__(self):
         """
         this func is a Default print method to print the social network parameters.
         """
-        str_net = f"{self.name} social network:"
+        network_str = f"{self.name} social network:"
         for user in self.users:
-            str_net += "\n" + user.__str__()    # Add the user's string representation to the returned string.
-        return str_net
+            network_str += "\n" + user.__str__()  # Add the user's string representation to the returned string.
+        return network_str

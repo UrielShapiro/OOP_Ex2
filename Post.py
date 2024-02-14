@@ -1,12 +1,15 @@
 import User
+from enum import Enum
+from abc import ABC, abstractmethod
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 
-class Post:
+class Post(ABC):
     """
     this class is the parent of all the posts. All the posts inherits this class.
     """
+
     def __init__(self, owner):
         """
         this func is a constructor for a post
@@ -30,11 +33,19 @@ class Post:
         """
         self.owner.comment_notify(user, txt)  # If a user comments on a post, the post owner will be notified.
 
+    @abstractmethod
+    def __str__(self):
+        """
+        each post type has a different string representation and will need to override this method.
+        """
+        pass
+
 
 class ImagePost(Post):
     """
     this class represent an image post type.
     """
+
     def __init__(self, owner, path):
         """
         this func is a constructor for the image post.
@@ -68,6 +79,7 @@ class SalePost(Post):
     """
     this class represent a sale post type.
     """
+
     def __init__(self, owner, inf, price, location):
         """
         this func is a constructor for the sale post.
@@ -84,7 +96,7 @@ class SalePost(Post):
 
     def __str__(self):
         """
-        this is a default method for printing the post. Changed to match printing current object.
+        this is a default method for printing the post. Changed to match printing SalePost.
         """
         if self.isAvailable:  # If the product is available, the post will show that it is for sale.
             return (f"{self.owner.name} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
@@ -98,7 +110,6 @@ class SalePost(Post):
         this func is used when the post's owner want to discount the product's price.
         param percent: the amount of discount in precedent.
         param password: the post's owner password
-        return:
         """
         if self.owner.connected is True and self.owner.password == password:
             # If the user is connected and his password matches the input password, he can discount the product.
@@ -120,6 +131,7 @@ class TextPost(Post):
     """
     this class represent a text post type.
     """
+
     def __init__(self, owner, txt):
         """
          this func is a constructor for the sale post.
@@ -136,22 +148,34 @@ class TextPost(Post):
         return f"{self.owner.name} published a post:\n\"{self.txt}\"\n"
 
 
-def get_post(post_type: str, owner: 'User', information: str, price, location):
+class PostType(Enum):
     """
-    this is a factory that creates for the user a post from the wanted type.
-    param post_type: the wanted type of the post
-    param owner: the post's owner.
-    param information: text post-the text, image post-the path to the image, sale post-the product's details.
-    param price: (if the post is a sale post) the product's price
-    param location: (if the post is a sale post) location to pick up from
-    return: anew post of the wanted type.
+    this is an enum class that represents the post's types for easy modification when updating the code.
     """
-    new_post = None
-    if post_type == "Text":
-        new_post = TextPost(owner, information)
-    elif post_type == "Image":
-        new_post = ImagePost(owner, information)
-    elif post_type == "Sale":
-        new_post = SalePost(owner, information, price, location)
-    print(new_post)
-    return new_post
+    Text = "Text"
+    Image = "Image"
+    Sale = "Sale"
+
+
+class PostFactory:
+
+    @staticmethod
+    def get_post(post_type: str, owner: 'User', information: str, price, location):
+        """
+        this is a factory that creates for the user a post from the wanted type.
+        param post_type: the wanted type of the post
+        param owner: the post's owner.
+        param information: text post-the text, image post-the path to the image, sale post-the product's details.
+        param price: (if the post is a sale post) the product's price
+        param location: (if the post is a sale post) location to pick up from
+        return: anew post of the wanted type.
+        """
+        new_post = None
+        if post_type == PostType.Text.value:
+            new_post = TextPost(owner, information)
+        elif post_type == PostType.Image.value:
+            new_post = ImagePost(owner, information)
+        elif post_type == PostType.Sale.value:
+            new_post = SalePost(owner, information, price, location)
+        print(new_post)
+        return new_post

@@ -1,5 +1,20 @@
 from Notifications import Notifications
-from Post import get_post
+from Post import PostFactory
+
+_factory = None  # Wll be used to create only one instance of the PostFactory.
+
+
+def single_post_factory():
+    """
+    this func is a singleton for the post factory.
+    Was created only for storage efficiency. because it doesn't really matter if we create multiple instances of
+    the post factory.
+    :return:
+    """
+    global _factory  # This function changes the global variable _factory.
+    if _factory is None:  # If the _factory is not created, create it.
+        _factory = PostFactory()  # Create a new instance of PostFactory.
+    return _factory
 
 
 class User:
@@ -8,7 +23,8 @@ class User:
     """
 
     def __init__(self, name: str, password: str):
-        """this func is a constructor for a new user.
+        """
+        this func is a constructor for a new user.
         receives: name and password of the new user
         """
         self.name = name
@@ -17,8 +33,10 @@ class User:
         self.iFollow = []  # list of users that this user follows
         self.my_posts = []  # list of posts that this user published
         self.my_notifications = []  # list of notifications that this user received
-        self.followers = []  # list of users that follow this user
-        self.observer_notifications = Notifications(self)
+        self.my_followers = []  # list of users that follow this user
+        self.observer_notifications = Notifications(self)  # Create a new instance of Notifications for this user.
+        self.post_factory = single_post_factory()
+        # Create a new instance of PostFactory for this user, so that the user could create posts from this class.
 
     def follow(self, other_user: 'User'):
         """
@@ -30,7 +48,7 @@ class User:
                 return
             # The user doesn't follow the other user, so he would follow him.
             self.iFollow.append(other_user)  # Add the other user to the list of users that this user follows.
-            other_user.followers.append(self)  # Add this user to the list of users that follow the other user.
+            other_user.my_followers.append(self)  # Add this user to the list of users that follow the other user.
             print(f"{self.name} started following {other_user.name}")
             # Print a message that the user started following other_user.
 
@@ -42,7 +60,8 @@ class User:
         if self.connected:  # The user can unfollow other users only if he is connected.
             if other_user in self.iFollow:  # The user would unfollow other_user only if he already follows him.
                 self.iFollow.remove(other_user)  # Remove the other_user from the list of users that this user follows.
-                other_user.followers.remove(self)  # Remove this user from the list of users that follow the other_user.
+                other_user.my_followers.remove(self)  # Remove this user from the list of users that follow the
+                # other_user.
                 print(f"{self.name} unfollowed {other_user.name}")
                 # Print a message that the user unfollowed other_user.
 
@@ -70,10 +89,10 @@ class User:
         returns: the post of the wanted type.
         """
         if self.connected:  # The user can publish a post only if he is connected.
-            new_post = get_post(post_type, self, information, price, location)
+            new_post = self.post_factory.get_post(post_type, self, information, price, location)
             # Create a new post using the factory method.
             self.my_posts.append(new_post)  # Add the new post to the list of posts that this user published.
-            for user in self.followers:
+            for user in self.my_followers:
                 self.observer_notifications.published_post_notify(user)
                 # Notify all the users that follow this user about the new post.
             return new_post
@@ -86,14 +105,14 @@ class User:
         if self.name != other.name:  # The user can't like his own post.
             self.observer_notifications.update_like(other)  # Notify the post owner that this user liked his post.
 
-    def comment_notify(self, other, inf: str):
+    def comment_notify(self, other, info: str):
         """
         this func add a comment for a post
         param other: the user who commented
-        param inf: the comment
+        param info: the comment
         """
         if self.name != other.name:  # The user can't comment on his own post.
-            self.observer_notifications.update_comment(other, inf)
+            self.observer_notifications.update_comment(other, info)
             # Notify the post owner that this user commented on his post.
             # Include the information of the comment in the notification.
 
@@ -112,4 +131,4 @@ class User:
         this func is a Default print method to print the user parameters.
         """
         return (f"User name: {self.name}, Number of posts: {self.my_posts.__len__()}, Number of followers: "
-                f"{self.followers.__len__()}")
+                f"{self.my_followers.__len__()}")

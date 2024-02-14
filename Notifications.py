@@ -1,5 +1,6 @@
 import User
 
+
 """
 this class represents an observer that responsible for his owner's notifications.
 the observer update his owner's notifications when:
