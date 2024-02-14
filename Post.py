@@ -66,16 +66,26 @@ class ImagePost(Post):
 
 class SalePost(Post):
     """
-
+    this class represent a sale post type.
     """
     def __init__(self, owner, inf, price, location):
+        """
+        this func is a constructor for the sale post.
+        param owner: the user who published the post
+        param inf: the product's details
+        param price: the product's price
+        param location: the location to pick up the product
+        """
         self.inf = inf
         self.price = price
         self.location = location
         self.isAvailable = True  # When creating a new post, the product is available.
         super().__init__(owner)
 
-    def __str__(self):  # Default method for printing the post. Changed to match printing current object.
+    def __str__(self):
+        """
+        this is a default method for printing the post. Changed to match printing current object.
+        """
         if self.isAvailable:  # If the product is available, the post will show that it is for sale.
             return (f"{self.owner.name} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
                     f"pickup from: {self.location}\n")
@@ -84,12 +94,22 @@ class SalePost(Post):
                     f"pickup from: {self.location}\n")
 
     def discount(self, percent, password):
+        """
+        this func is used when the post's owner want to discount the product's price.
+        param percent: the amount of discount in precedent.
+        param password: the post's owner password
+        return:
+        """
         if self.owner.connected is True and self.owner.password == password:
             # If the user is connected and his password matches the input password, he can discount the product.
             self.price -= self.price * percent / 100  # Calculate the new price after the discount.
             print(f"Discount on {self.owner.name} product! the new price is: {self.price}")
 
     def sold(self, password: str):
+        """
+        this func is used when the post's owner want to declare on the product as "sold".
+        param password: the post's owner password.
+        """
         if self.owner.connected is True and self.owner.password == password:
             # If the user is connected and his password matches the input password, he can sell the product.
             self.isAvailable = False  # Change the product status to not available.
@@ -97,15 +117,35 @@ class SalePost(Post):
 
 
 class TextPost(Post):
+    """
+    this class represent a text post type.
+    """
     def __init__(self, owner, txt):
+        """
+         this func is a constructor for the sale post.
+        param owner: the user who published the post
+        param txt: the text of the post.
+        """
         self.txt = txt
         super().__init__(owner)
 
-    def __str__(self):  # Default method for printing the post. Changed to match printing current object.
+    def __str__(self):
+        """
+        this is a default method for printing the post. Changed to match printing current object.
+        """
         return f"{self.owner.name} published a post:\n\"{self.txt}\"\n"
 
 
 def get_post(post_type: str, owner: 'User', information: str, price, location):
+    """
+    this is a factory that creates for the user a post from the wanted type.
+    param post_type: the wanted type of the post
+    param owner: the post's owner.
+    param information: text post-the text, image post-the path to the image, sale post-the product's details.
+    param price: (if the post is a sale post) the product's price
+    param location: (if the post is a sale post) location to pick up from
+    return: anew post of the wanted type.
+    """
     new_post = None
     if post_type == "Text":
         new_post = TextPost(owner, information)
