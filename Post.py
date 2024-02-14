@@ -4,25 +4,56 @@ import matplotlib.image as mpimg
 
 
 class Post:
+    """
+    this class is the parent of all the posts. All the posts inherits this class.
+    """
     def __init__(self, owner):
+        """
+        this func is a constructor for a post
+        param owner: the post's owner
+        """
         self.owner = owner
 
     def like(self, user: 'User'):
+        """
+        this func is used when a user like a post.
+        this func notify the post's owner about the like using the owner's observer.
+        param user: the user who liked the post.
+        """
         self.owner.like_notify(user)  # If a user likes a post, the post owner will be notified.
 
     def comment(self, user: User, txt: str):
+        """
+        this func is used when a user comments on a post.
+        this func notify the post's owner about the comment using the owner's observer.
+        param user: the user who commented on the post.
+        """
         self.owner.comment_notify(user, txt)  # If a user comments on a post, the post owner will be notified.
 
 
 class ImagePost(Post):
+    """
+    this class represent an image post type.
+    """
     def __init__(self, owner, path):
+        """
+        this func is a constructor for the image post.
+        param owner: the user who published the post
+        param path: the path to the picture
+        """
         self.path = path
         super().__init__(owner)
 
-    def __str__(self):  # Default method for printing the post. Changed to match printing current object.
+    def __str__(self):
+        """
+        this is a Default method for printing the post. Changed to match printing current object.
+        """
         return f"{self.owner.name} posted a picture\n"
 
-    def display(self):  # Function to display the picture. uses matplotlib library.
+    def display(self):
+        """
+        this function is used to display the picture. uses matplotlib library.
+        """
         print("Shows picture")
         try:
             img = mpimg.imread(self.path)  # Read the image from the path.
@@ -34,6 +65,9 @@ class ImagePost(Post):
 
 
 class SalePost(Post):
+    """
+
+    """
     def __init__(self, owner, inf, price, location):
         self.inf = inf
         self.price = price
