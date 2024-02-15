@@ -47,10 +47,7 @@ class User:
             if other_user in self.iFollow:  # If the user already follows the other user, do nothing.
                 return
             # The user doesn't follow the other user, so he would follow him.
-            self.iFollow.append(other_user)  # Add the other user to the list of users that this user follows.
-            other_user.my_followers.append(self)  # Add this user to the list of users that follow the other user.
-            print(f"{self.name} started following {other_user.name}")
-            # Print a message that the user started following other_user.
+            Notifications.notify_follower(self, other_user)  # Notify the other user that this user started following
 
     def unfollow(self, other_user):
         """
@@ -59,11 +56,8 @@ class User:
         """
         if self.connected:  # The user can unfollow other users only if he is connected.
             if other_user in self.iFollow:  # The user would unfollow other_user only if he already follows him.
-                self.iFollow.remove(other_user)  # Remove the other_user from the list of users that this user follows.
-                other_user.my_followers.remove(self)  # Remove this user from the list of users that follow the
-                # other_user.
-                print(f"{self.name} unfollowed {other_user.name}")
-                # Print a message that the user unfollowed other_user.
+                Notifications.notify_unfollow(self, other_user)
+                # Notify the other user that this user stopped following him.
 
     def log_in(self):
         """
@@ -92,9 +86,8 @@ class User:
             new_post = self.post_factory.get_post(post_type, self, information, price, location)
             # Create a new post using the factory method.
             self.my_posts.append(new_post)  # Add the new post to the list of posts that this user published.
-            for user in self.my_followers:
-                self.observer_notifications.published_post_notify(user)
-                # Notify all the users that follow this user about the new post.
+            Notifications.published_post_notify(self)
+            # Notify all the users that follow this user about the new post.
             return new_post
 
     def like_notify(self, other):

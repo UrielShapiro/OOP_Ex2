@@ -1,6 +1,5 @@
 import User
 
-
 """
 this class represents an observer that responsible for his owner's notifications.
 the observer update his owner's notifications when:
@@ -37,10 +36,34 @@ class Notifications:
         # Add a notification to the post owner notifications list.
         print(f"notification to {self.owner.name}: {user.name} commented on your post: {information}")
 
-    def published_post_notify(self, user):
+    def published_post_notify(self: User):
         """
           this func update the owner's notifications in case that a user followed by the owner published a post
         param user: the user who published a post
         """
-        user.my_notifications.append(f"{self.owner.name} has a new post")
-        # Add a notification to the user notifications list about the new post.
+        for user in self.my_followers:    # Go over all the users that follow this user.
+            user.my_notifications.append(f"{self.name} has a new post")
+            # Add a notification to the user notifications list about the new post.
+
+    def notify_follower(self: User, other_user):
+        """
+        This func update the owner's notifications in case that a user followed by the owner published a post
+        :param other_user: The user "self" started following
+        :param user: the user who follows
+        """
+        self.iFollow.append(other_user)  # Add the other user to the list of users that this user follows.
+        other_user.my_followers.append(self)  # Add this user to the list of users that follow the other user.
+        print(f"{self.name} started following {other_user.name}")
+        # Print a message that the user started following other_user.
+
+    def notify_unfollow(self: User, other_user):
+        """
+        This func update the owner's notifications in case that a user followed by the owner published a post
+        :param other_user: The user "self" started following
+        :param user: the user who follows
+        """
+        self.iFollow.remove(other_user)  # Remove the other_user from the list of users that this user follows.
+        other_user.my_followers.remove(self)  # Remove this user from the list of users that follow the
+        # other_user.
+        print(f"{self.name} unfollowed {other_user.name}")
+        # Print a message that the user unfollowed other_user.
