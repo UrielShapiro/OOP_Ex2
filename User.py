@@ -1,5 +1,5 @@
 from Notifications import Notifications
-from Post import get_post
+import Post
 
 
 class User:
@@ -29,8 +29,6 @@ class User:
             if other_user in self.iFollow:  # If the user already follows the other user, do nothing.
                 return
             # The user doesn't follow the other user, so he would follow him.
-            self.iFollow.append(other_user)  # Add the other user to the list of users that this user follows.
-            other_user.followers.append(self)  # Add this user to the list of users that follow the other user.
             self.observer_notifications.follow_notify(other_user)
 
     def unfollow(self, other_user):
@@ -40,8 +38,6 @@ class User:
         """
         if self.connected:  # The user can unfollow other users only if he is connected.
             if other_user in self.iFollow:  # The user would unfollow other_user only if he already follows him.
-                self.iFollow.remove(other_user)  # Remove the other_user from the list of users that this user follows.
-                other_user.followers.remove(self)  # Remove this user from the list of users that follow the other_user.
                 self.observer_notifications.unfollow_notify(other_user)
 
     def log_in(self):
@@ -68,7 +64,7 @@ class User:
         returns: the post of the wanted type.
         """
         if self.connected:  # The user can publish a post only if he is connected.
-            new_post = get_post(post_type, self, information, price, location)
+            new_post = Post.get_post(post_type, self, information, price, location)
             # Create a new post using the factory method.
             self.my_posts.append(new_post)  # Add the new post to the list of posts that this user published.
             for user in self.followers:
@@ -81,7 +77,7 @@ class User:
         this func add a like for a post.
         receives: the user who made the like
         """
-        if self.name != other.name:  # The user can't like his own post.
+        if self.name != other.net_name:  # The user can't like his own post.
             self.observer_notifications.update_like(other)  # Notify the post owner that this user liked his post.
 
     def comment_notify(self, other, inf: str):
@@ -90,7 +86,7 @@ class User:
         param other: the user who commented
         param inf: the comment
         """
-        if self.name != other.name:  # The user can't comment on his own post.
+        if self.name != other.net_name:  # The user can't comment on his own post.
             self.observer_notifications.update_comment(other, inf)
             # Notify the post owner that this user commented on his post.
             # Include the information of the comment in the notification.
