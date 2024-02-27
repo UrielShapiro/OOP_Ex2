@@ -90,7 +90,7 @@ def main():
     print(p1)
     print(p2)
 
-    # Printing all notifications received by a certain user
+    # Printing all notifications received by a certain users
     u4.print_notifications()
     print()
 

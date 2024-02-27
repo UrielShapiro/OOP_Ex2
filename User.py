@@ -1,5 +1,5 @@
 from Notifications import Notifications
-from Post import get_post
+from Post import PostFactory
 
 
 class User:
