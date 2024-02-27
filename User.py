@@ -19,13 +19,13 @@ def single_post_factory():
 
 class User:
     """
-    this class represent a network's user.
+    this class represents a network's users.
     """
 
     def __init__(self, name: str, password: str):
         """
-        this func is a constructor for a new user.
-        receives: name and password of the new user
+        this func is a constructor for a new users.
+        receives: name and password of the new users
         """
         self.name = name
         self.password = password
@@ -34,55 +34,54 @@ class User:
         self.my_posts = []  # list of posts that this user published
         self.my_notifications = []  # list of notifications that this user received
         self.my_followers = []  # list of users that follow this user
-        self.observer_notifications = Notifications(self)  # Create a new instance of Notifications for this user.
         self.post_factory = single_post_factory()
-        # Create a new instance of PostFactory for this user, so that the user could create posts from this class.
+        # Create a new instance of PostFactory for this user, so that the users could create posts from this class.
 
     def follow(self, other_user: 'User'):
         """
-        this func make the user follow the other user.
-        receives: other user to follow
+        this func make the users follow the other users.
+        receives: other users to follow
         """
-        if self.connected:  # The user can follow other users only if he is connected.
-            if other_user in self.iFollow:  # If the user already follows the other user, do nothing.
+        if self.connected:  # The users can follow other users only if he is connected.
+            if other_user in self.iFollow:  # If the users already follow the other users, do nothing.
                 return
-            # The user doesn't follow the other user, so he would follow him.
-            Notifications.notify_follower(self, other_user)  # Notify the other user that this user started following
+            # The users doesn't follow the other users, so he would follow him.
+            Notifications.notify_follower(self, other_user)  # Notify the other users that this user started following
 
     def unfollow(self, other_user):
         """
-        this func remove the other user from the list of the users who followed by self.
-        receives: other user to remove from followed
+        this func removes the other users from the list of the users who followed by me.
+        receives: other users to remove from followed
         """
-        if self.connected:  # The user can unfollow other users only if he is connected.
-            if other_user in self.iFollow:  # The user would unfollow other_user only if he already follows him.
+        if self.connected:  # The users can unfollow other users only if he is connected.
+            if other_user in self.iFollow:  # The users would unfollow other_user only if he already follows him.
                 Notifications.notify_unfollow(self, other_user)
-                # Notify the other user that this user stopped following him.
+                # Notify the other users that this user stopped following him.
 
     def log_in(self):
         """
-        this func log in the user(connected -> true)
+        this func log in the users(connected -> true)
         """
         self.connected = True  # Change the connected status to True.
         print(f"{self.name} connected")
 
     def log_out(self):
         """
-        this func log out the user(connected -> false)
+        this func log out the users(connected -> false)
         """
         self.connected = False  # Change the connected status to False.
         print(f"{self.name} disconnected")
 
     def publish_post(self, post_type: str, information: str, price=None, location=None):
         """
-        this func publishes a post from the user.
+        this func publishes a post from the users.
         receives: post type (str), information (text for textPost, path for imagePost, description for salePost),
         in case of salePost- price and location to pick up from.
         ** this func uses a factory to return the post of the wanted type. the factory decides which post to create by
         the post type.
         returns: the post of the wanted type.
         """
-        if self.connected:  # The user can publish a post only if he is connected.
+        if self.connected:  # The users can publish a post only if he is connected.
             new_post = self.post_factory.get_post(post_type, self, information, price, location)
             # Create a new post using the factory method.
             self.my_posts.append(new_post)  # Add the new post to the list of posts that this user published.
@@ -92,26 +91,26 @@ class User:
 
     def like_notify(self, other):
         """
-        this func add a like for a post.
-        receives: the user who made the like
+        this func adds a like for a post.
+        receives: the users who made the like and the user's post that was liked (other).
         """
-        if self.name != other.name:  # The user can't like his own post.
-            self.observer_notifications.update_like(other)  # Notify the post owner that this user liked his post.
+        if self.name != other.name:  # The users can't like his own post.
+            Notifications.update_like(self, other)  # Notify the post-owner that this user liked his post.
 
     def comment_notify(self, other, info: str):
         """
-        this func add a comment for a post
-        param other: the user who commented
+        this func adds a comment for a post
+        param other: the users who commented
         param info: the comment
         """
-        if self.name != other.name:  # The user can't comment on his own post.
-            self.observer_notifications.update_comment(other, info)
-            # Notify the post owner that this user commented on his post.
+        if self.name != other.name:  # The users can't comment on his own post.
+            Notifications.update_comment(self, other, info)
+            # Notify the post-owner that this user commented on his post.
             # Include the information of the comment in the notification.
 
     def print_notifications(self):
         """
-        this func print the user's notifications
+        this func prints the user's notifications
         """
         print(f"{self.name}'s notifications:")
         for notification in self.my_notifications:
@@ -121,7 +120,7 @@ class User:
 
     def __str__(self):
         """
-        this func is a Default print method to print the user parameters.
+        this func is a Default print method to print the user's parameters.
         """
         return (f"User name: {self.name}, Number of posts: {self.my_posts.__len__()}, Number of followers: "
                 f"{self.my_followers.__len__()}")
