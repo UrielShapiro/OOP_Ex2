@@ -43,3 +43,11 @@ class Notifications:
         """
         user.my_notifications.append(f"{self.owner.name} has a new post")
         # Add a notification to the user notifications list about the new post.
+
+    def follow_notify(self, other_user):
+        print(f"{self.owner.name} started following {other_user.name}")
+        # Print a message that the user started following other_user.
+
+    def unfollow_notify(self, other_user):
+        print(f"{self.owner.name} unfollowed {other_user.name}")
+        # Print a message that the user unfollowed other_user.

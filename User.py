@@ -31,8 +31,7 @@ class User:
             # The user doesn't follow the other user, so he would follow him.
             self.iFollow.append(other_user)  # Add the other user to the list of users that this user follows.
             other_user.followers.append(self)  # Add this user to the list of users that follow the other user.
-            print(f"{self.name} started following {other_user.name}")
-            # Print a message that the user started following other_user.
+            self.observer_notifications.follow_notify(other_user)
 
     def unfollow(self, other_user):
         """
@@ -43,8 +42,7 @@ class User:
             if other_user in self.iFollow:  # The user would unfollow other_user only if he already follows him.
                 self.iFollow.remove(other_user)  # Remove the other_user from the list of users that this user follows.
                 other_user.followers.remove(self)  # Remove this user from the list of users that follow the other_user.
-                print(f"{self.name} unfollowed {other_user.name}")
-                # Print a message that the user unfollowed other_user.
+                self.observer_notifications.unfollow_notify(other_user)
 
     def log_in(self):
         """
