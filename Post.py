@@ -28,9 +28,8 @@ def get_post(post_type: str, owner: 'User', information: str, price, location):
 
 class Post(ABC):
     """
-    this class is the parent of all the posts. All the posts inherits this class.
+    This class is the parent of all the posts. All the posts inherit this class.
     """
-
 
     def __init__(self, owner):
         """
@@ -42,7 +41,7 @@ class Post(ABC):
     def like(self, user: 'User'):
         """
         this func is used when a users like a post.
-        this func notify the post's owner about the like using the owner's observer.
+        this func notifies the post's owner about the like using the owner's observer.
         param users: the users who liked the post.
         """
         self.owner.like_notify(user)  # If users like a post, the post-owner will be notified.
@@ -58,14 +57,14 @@ class Post(ABC):
     @abstractmethod
     def __str__(self):
         """
-        each post type has a different string representation and will need to override this method.
+        each post-type has a different string representation and will need to override this method.
         """
         pass
 
 
 class ImagePost(Post):
     """
-    this class represent an image post type.
+    this class represents an image post type.
     """
 
     def __init__(self, owner, path):
@@ -79,13 +78,13 @@ class ImagePost(Post):
 
     def __str__(self):
         """
-        this is a Default method for printing the post. Changed to match printing current object.
+        this is a Default method for printing the post. Changed to match a printing current object.
         """
-        return f"{self.owner.net_name} posted a picture\n"
+        return f"{self.owner.name} posted a picture\n"
 
     def display(self):
         """
-        this function is used to display the picture. uses matplotlib library.
+        this function is used to display the picture. uses a matplotlib library.
         """
         print("Shows picture")
         try:
@@ -99,7 +98,7 @@ class ImagePost(Post):
 
 class SalePost(Post):
     """
-    this class represent a sale post type.
+    this class represents a sale post type.
     """
 
     def __init__(self, owner, inf, price, location):
@@ -118,40 +117,40 @@ class SalePost(Post):
 
     def __str__(self):
         """
-        this is a default method for printing the post. Changed to match printing SalePost.
+        This is a default method for printing the post. Changed to match printing SalePost.
         """
         if self.isAvailable:  # If the product is available, the post will show that it is for sale.
-            return (f"{self.owner.net_name} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
+            return (f"{self.owner.name} posted a product for sale:\nFor sale! {self.inf}, price: {self.price}, "
                     f"pickup from: {self.location}\n")
         else:  # If the product is not available, the post will show that it is sold.
-            return (f"{self.owner.net_name} posted a product for sale:\nSold! {self.inf}, price: {self.price}, "
+            return (f"{self.owner.name} posted a product for sale:\nSold! {self.inf}, price: {self.price}, "
                     f"pickup from: {self.location}\n")
 
     def discount(self, percent, password):
         """
-        this func is used when the post's owner want to discount the product's price.
-        param percent: the amount of discount in precedent.
+        this func is used when the post's owner wants to discount the product's price.
+        param percent: the amount of discount in a precedent.
         param password: the post's owner password
         """
         if self.owner.connected is True and self.owner.password == password:
-            # If the users is connected and his password matches the input password, he can discount the product.
+            # If the users are connected and his password matches the input password, he can discount the product.
             self.price -= self.price * percent / 100  # Calculate the new price after the discount.
-            print(f"Discount on {self.owner.net_name} product! the new price is: {self.price}")
+            print(f"Discount on {self.owner.name} product! the new price is: {self.price}")
 
     def sold(self, password: str):
         """
-        this func is used when the post's owner want to declare on the product as "sold".
+        this func is used when the post's owner wants to declare on the product as "sold".
         param password: the post's owner password.
         """
         if self.owner.connected is True and self.owner.password == password:
-            # If the users is connected and his password matches the input password, he can sell the product.
+            # If the users are connected and his password matches the input password, he can sell the product.
             self.isAvailable = False  # Change the product status to not available.
-            print(f"{self.owner.net_name}'s product is sold")
+            print(f"{self.owner.name}'s product is sold")
 
 
 class TextPost(Post):
     """
-    this class represent a text post type.
+    this class represents a text post type.
     """
 
     def __init__(self, owner, txt):
@@ -167,7 +166,7 @@ class TextPost(Post):
         """
         this is a default method for printing the post. Changed to match printing current object.
         """
-        return f"{self.owner.net_name} published a post:\n\"{self.txt}\"\n"
+        return f"{self.owner.name} published a post:\n\"{self.txt}\"\n"
 
 
 class PostType(Enum):

@@ -7,7 +7,7 @@ net_name = ""
 
 class SocialNetwork:
     """
-    this class represent a social network.
+    this class represents a social network.
     """
     users = []
 
@@ -41,7 +41,7 @@ class SocialNetwork:
         global net_name
         if net_name == "":
             net_name = name
-            print(f"The social network {net_name} was created!")
+            print(f"The social network {net_name} was created!\n")
 
     def sign_up(self, name, password):  # Sign up to the social network.
         """
@@ -51,7 +51,7 @@ class SocialNetwork:
         return: the new user
         """
         for user in self.users:  # Go over all the registered users.
-            if user.net_name == name:  # Check if the name is already taken by other user.
+            if user.name == name:  # Check if the name is already taken by other user.
                 raise RuntimeError('name is not valid')
                 # If the name is already taken, you can't create a new user with the same name.
         if 4 <= len(password) <= 8:
@@ -63,21 +63,21 @@ class SocialNetwork:
 
     def log_in(self, name, password):
         """
-        this func allows an exist user to log in from the network
-        param name: name of the user who want to log in
-        param password: password of the user who want to log in
+        this func allows an existed user to log in from the network
+        param name: name of the user who wants to log in
+        param password: password of the user who wants to log in
         """
         for user in self.users:  # Go over all the registered users.
-            if user.net_name == name and user.password == password:  # Check if the name and password are
+            if user.name == name and user.password == password:  # Check if the name and password are
                 user.log_in()  # Perform log in (will change the connected status to True).
 
     def log_out(self, name):
         """
-        this func allows an exist user to log out from the network
-        param name: name of the user who want to log in
+        this func allows an existed user to log out from the network
+        param name: name of the user who wants to log in
         """
         for u in self.users:
-            if u.net_name == name:  # Go over all the registered users and find the user with the given name.
+            if u.name == name:  # Go over all the registered users and find the user with the given name.
                 u.log_out()  # Perform log out (will change the connected status to False).
 
     def __str__(self):
